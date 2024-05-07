@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Budget Tracker',
       debugShowCheckedModeBanner: false,
-      home: SignUpView(),
+      home: SignUpView(),//
     );
   }
 }
