@@ -1,17 +1,49 @@
 
 import 'package:expense_tracker/screens/login_screen.dart';
+import 'package:expense_tracker/services/auth_service.dart';
 import 'package:expense_tracker/utils/appvalidator.dart';
 import 'package:flutter/material.dart';
 
-class SignUpView extends StatelessWidget {
-  SignUpView({super.key});
+class SignUpView extends StatefulWidget {
+  const SignUpView({super.key});
 
+  @override
+  State<SignUpView> createState() => _SignUpViewState();
+}
+
+class _SignUpViewState extends State<SignUpView> {
   final GlobalKey<FormState> _formKey= GlobalKey<FormState>();
+
+  final _userNameController=TextEditingController();
+
+  final _userEmailController=TextEditingController();
+
+  final _userPhoneController=TextEditingController();
+
+  final _userPassController=TextEditingController();
+
+  final authService=AuthService();
+
+  var isLoader=false;
+
   Future <void> _submitForm() async {
     if(_formKey.currentState!.validate()){
-      ScaffoldMessenger.of(_formKey.currentContext!).showSnackBar(
-        const SnackBar(content: Text("Resgistro realizado con éxito")),
-      );
+      setState(() {
+        isLoader=true;
+      });
+      var data={
+        "username":_userNameController.text,
+        "email":_userEmailController.text,
+        "password":_userPassController.text,
+        "phone":_userPhoneController.text
+      };
+      await authService.createUser(data, context);
+      setState(() {
+        isLoader=false;
+      });
+      //ScaffoldMessenger.of(_formKey.currentContext!).showSnackBar(
+        //const SnackBar(content: Text("Resgistro realizado con éxito")),
+      //);
     }
   }
 
@@ -46,6 +78,7 @@ class SignUpView extends StatelessWidget {
                 height:50.0,
               ),
               TextFormField(
+                controller: _userNameController,
                 style: const TextStyle(color: Colors.white),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 decoration: _buildInputDecoration("Nombre de usuario",Icons.person),
@@ -54,6 +87,7 @@ class SignUpView extends StatelessWidget {
                 height:16.0,
               ),
               TextFormField(
+                controller: _userEmailController,
                   keyboardType: TextInputType.emailAddress,
                   style: const TextStyle(color: Colors.white),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -63,6 +97,7 @@ class SignUpView extends StatelessWidget {
                 height:16.0,
               ),
               TextFormField(
+                controller: _userPhoneController,
                 keyboardType: TextInputType.phone,
                 style: const TextStyle(color: Colors.white),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -72,6 +107,7 @@ class SignUpView extends StatelessWidget {
                 height:16.0,
               ),
               TextFormField(
+                controller: _userPassController,
                   style: const TextStyle(color: Colors.white),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   decoration: _buildInputDecoration("Contraseña",Icons.lock),
@@ -85,8 +121,12 @@ class SignUpView extends StatelessWidget {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(backgroundColor:
                     const Color.fromARGB(255,241,89,0)),
-                  onPressed: _submitForm,
-                  child: const Text(
+                  onPressed: (){isLoader ? print("Cargando..."):
+                  _submitForm();
+                  },
+                  child: isLoader
+                      ? const Center(child: CircularProgressIndicator())
+                  : const Text(
                     "Crear", style: TextStyle(fontSize: 20))),
               ),
               const SizedBox(
@@ -103,6 +143,7 @@ class SignUpView extends StatelessWidget {
             ],
           ),),)) ;
   }
+
   InputDecoration _buildInputDecoration(String label, IconData suffixIcon){
     return InputDecoration(
       fillColor: const Color(0xAA494A59),
