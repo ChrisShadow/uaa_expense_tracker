@@ -1,5 +1,5 @@
 import 'package:expense_tracker/firebase_options.dart';
-import 'package:expense_tracker/screens/sign_up.dart';
+import 'package:expense_tracker/widget/auth_gate.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       title: 'Budget Tracker',
       debugShowCheckedModeBanner: false,
-      home: SignUpView(),//
+      home: AuthGate(),//
     );
   }
 }

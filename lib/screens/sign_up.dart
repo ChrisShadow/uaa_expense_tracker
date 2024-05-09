@@ -4,6 +4,8 @@ import 'package:expense_tracker/services/auth_service.dart';
 import 'package:expense_tracker/utils/appvalidator.dart';
 import 'package:flutter/material.dart';
 
+import 'dashboard.dart';
+
 class SignUpView extends StatefulWidget {
   const SignUpView({super.key});
 
@@ -134,7 +136,7 @@ class _SignUpViewState extends State<SignUpView> {
               ),
               TextButton(onPressed: (){
                 Navigator.push(context, MaterialPageRoute(builder:
-                (context)=>LoginView()),);
+                (context)=>const LoginView()),);
               },
                   child: const Text("Login",style: TextStyle(
                       color: Color(0xFFF15900),fontSize: 20),

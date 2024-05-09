@@ -1,17 +1,42 @@
 import 'package:expense_tracker/screens/sign_up.dart';
 import 'package:flutter/material.dart';
 
+import '../services/auth_service.dart';
 import '../utils/appvalidator.dart';
 
-class LoginView extends StatelessWidget {
-  LoginView({super.key});
+class LoginView extends StatefulWidget {
+  const LoginView({super.key});
 
+  @override
+  State<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
   final GlobalKey<FormState> _formKey= GlobalKey<FormState>();
+
+  final _userEmailController=TextEditingController();
+  final _userPassController=TextEditingController();
+  final authService=AuthService();
+  var isLoader=false;
+
   Future <void> _submitForm() async {
     if(_formKey.currentState!.validate()){
-      ScaffoldMessenger.of(_formKey.currentContext!).showSnackBar(
-        const SnackBar(content: Text("Cuenta iniciada con éxito")),
-      );
+      setState(() {
+        isLoader=true;
+      });
+      var data={
+        "email":_userEmailController.text,
+        "password":_userPassController.text
+      };
+      await authService.login(data, context);
+
+      setState(() {
+        isLoader=false;
+      });
+
+      //ScaffoldMessenger.of(_formKey.currentContext!).showSnackBar(
+        //const SnackBar(content: Text("Cuenta iniciada con éxito")),
+      //);
     }
   }
 
@@ -46,6 +71,7 @@ class LoginView extends StatelessWidget {
                   height:16.0,
                 ),
                 TextFormField(
+                  controller: _userEmailController,
                     keyboardType: TextInputType.emailAddress,
                     style: const TextStyle(color: Colors.white),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -55,6 +81,7 @@ class LoginView extends StatelessWidget {
                   height:16.0,
                 ),
                 TextFormField(
+                  controller: _userPassController,
                     style: const TextStyle(color: Colors.white),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: _buildInputDecoration("Contraseña",Icons.lock),
@@ -68,8 +95,13 @@ class LoginView extends StatelessWidget {
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(backgroundColor:
                       const Color.fromARGB(255,241,89,0)),
-                      onPressed: _submitForm,
-                      child: const Text(
+                      onPressed: () {isLoader ? print("Cargando...") :
+                      _submitForm();
+                      },
+                      child: isLoader
+                          ? const Center(child: CircularProgressIndicator())
+                          :
+                      const Text(
                           "Login", style: TextStyle(fontSize: 20))),
                 ),
                 const SizedBox(
@@ -77,7 +109,7 @@ class LoginView extends StatelessWidget {
                 ),
                 TextButton(onPressed: (){
                   Navigator.push(context, MaterialPageRoute(builder:
-                      (context)=>SignUpView()),);
+                      (context)=>const SignUpView()),);
                 },
                     child: const Text("Crear cuenta",style: TextStyle(
                         color: Color(0xFFF15900),fontSize: 20),
@@ -86,6 +118,7 @@ class LoginView extends StatelessWidget {
               ],
             ),),)) ;
   }
+
   InputDecoration _buildInputDecoration(String label, IconData suffixIcon){
     return InputDecoration(
         fillColor: const Color(0xAA494A59),
