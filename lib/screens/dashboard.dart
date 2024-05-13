@@ -1,7 +1,9 @@
 
-import 'package:expense_tracker/screens/login_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:expense_tracker/screens/trans_screen.dart';
+import 'package:expense_tracker/widget/navbar.dart';
 import 'package:flutter/material.dart';
+
+import 'home_screen.dart';
 
 class  Dashboard extends StatefulWidget {
   const Dashboard ({super.key});
@@ -12,31 +14,22 @@ class  Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   var isLogoutLoading=false;
-  logOut() async{
-    setState(() {
-      isLogoutLoading=true;
-    });
-    await FirebaseAuth.instance.signOut();
-    Navigator.of(context).pushReplacement( MaterialPageRoute(builder:
-        (context)=>const LoginView()),);
-    setState(() {
-      isLogoutLoading=false;
-    });
-  }
+  int currentIndex=0;
+  var pageViewList=[const Home(),const Transaction()];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(onPressed: (){
-            logOut();
-          }, icon: isLogoutLoading
-                ?const CircularProgressIndicator() :
-          const Icon(Icons.exit_to_app))
-        ],
+      bottomNavigationBar: NavBar(
+        selectedIndex: currentIndex,
+        onDestinationSelected: (int value){
+          setState(() {
+            currentIndex=value;
+          });
+        },
       ),
-      body: const Text("hello"),
+
+      body: pageViewList[currentIndex],
     );
   }
 }

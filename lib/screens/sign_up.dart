@@ -4,7 +4,6 @@ import 'package:expense_tracker/services/auth_service.dart';
 import 'package:expense_tracker/utils/appvalidator.dart';
 import 'package:flutter/material.dart';
 
-import 'dashboard.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({super.key});
