@@ -19,10 +19,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Budget Tracker',
+      builder: (context, child){
+        return MediaQuery(
+            data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+            child: child!);
+      },
       debugShowCheckedModeBanner: false,
-      home: AuthGate(),//
+      home: const AuthGate(),//
     );
   }
 }
