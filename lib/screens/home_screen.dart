@@ -1,3 +1,4 @@
+import 'package:expense_tracker/widget/add_transact_form.dart';
 import 'package:expense_tracker/widget/hero_card.dart';
 import 'package:expense_tracker/widget/transact_cards.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -26,9 +27,23 @@ class _HomeState extends State<Home> {
     });
   }
 
+  _dialogBuilder(BuildContext context){
+    return showDialog(context: context, builder: (context){
+      return const AlertDialog(
+        content: AddTransactForm(),
+      );
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blue.shade900,
+        onPressed: ((){
+          _dialogBuilder(context);
+        }),
+        child: const Icon(Icons.add, color: Colors.white,),
+      ),
       appBar: AppBar(
         backgroundColor: Colors.blue.shade900,
         title: const Text("Hola, ", style: TextStyle(color: Colors.white),),

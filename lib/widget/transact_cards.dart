@@ -38,6 +38,11 @@ class TransactCard extends StatelessWidget {
                   ]
                 ),
                 child: ListTile(
+                  minVerticalPadding: 5,
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 0
+                  ),
                   leading: SizedBox(
                     width: 70,
                     height: 100,
