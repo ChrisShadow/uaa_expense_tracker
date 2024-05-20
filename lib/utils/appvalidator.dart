@@ -30,4 +30,10 @@ class AppValidator{
     }
     return null;
   }
+  String? isEmptyCheck(value){
+    if(value!.isEmpty){
+      return 'Detalle requerido';
+    }
+    return null;
+  }
 }
