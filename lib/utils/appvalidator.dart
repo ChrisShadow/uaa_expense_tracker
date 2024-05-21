@@ -13,7 +13,7 @@ class AppValidator{
     if(value!.isEmpty){
       return 'Dato requerido';
     }
-    if(value.length >14){
+    if(value.length >12 || value.length<9 ){
       return 'Cantidad de dígitos no corresponde';
     }
     return null;
