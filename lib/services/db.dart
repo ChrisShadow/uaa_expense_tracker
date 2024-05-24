@@ -13,7 +13,7 @@ class Db {
         .catchError((error){
       showDialog(context: context, builder: (context){
         return AlertDialog(
-          title: const Text("Algo salió mal. Reintentar Signup."),
+          title: const Text("Algo salió mal."),
           content: Text(error.toString()),
         );
       });
