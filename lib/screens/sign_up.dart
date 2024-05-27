@@ -61,90 +61,92 @@ class _SignUpViewState extends State<SignUpView> {
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: Column(
-            children: [
-              const SizedBox(
-                height:80.0,
-              ),
-              const SizedBox(
-                width: 250,
-                child: Text(
-                  "Crearme una cuenta",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(
+                  height:80.0,
+                ),
+                const SizedBox(
+                  width: 250,
+                  child: Text(
+                    "Registrarme",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height:50.0,
-              ),
-              TextFormField(
-                controller: _userNameController,
-                style: const TextStyle(color: Colors.white),
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                decoration: _buildInputDecoration("Nombre de usuario",Icons.person),
-                validator:appValidator.validateUser),
-              const SizedBox(
-                height:16.0,
-              ),
-              TextFormField(
-                controller: _userEmailController,
-                  keyboardType: TextInputType.emailAddress,
+                const SizedBox(
+                  height:30.0,
+                ),
+                TextFormField(
+                  controller: _userNameController,
                   style: const TextStyle(color: Colors.white),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                  decoration: _buildInputDecoration("Correo electrónico",Icons.email),
-                validator: appValidator.validateEmail),
-              const SizedBox(
-                height:16.0,
-              ),
-              TextFormField(
-                controller: _userPhoneController,
-                keyboardType: TextInputType.phone,
-                style: const TextStyle(color: Colors.white),
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                decoration: _buildInputDecoration("Nro. de teléfono",Icons.call),
-                validator: appValidator.validatePhoneNumber),
-              const SizedBox(
-                height:16.0,
-              ),
-              TextFormField(
-                controller: _userPassController,
+                  decoration: _buildInputDecoration("Nombre de usuario",Icons.person),
+                  validator:appValidator.validateUser),
+                const SizedBox(
+                  height:16.0,
+                ),
+                TextFormField(
+                  controller: _userEmailController,
+                    keyboardType: TextInputType.emailAddress,
+                    style: const TextStyle(color: Colors.white),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    decoration: _buildInputDecoration("Correo electrónico",Icons.email),
+                  validator: appValidator.validateEmail),
+                const SizedBox(
+                  height:16.0,
+                ),
+                TextFormField(
+                  controller: _userPhoneController,
+                  keyboardType: TextInputType.phone,
                   style: const TextStyle(color: Colors.white),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                  decoration: _buildInputDecoration("Contraseña",Icons.lock),
-                  validator: appValidator.validatePass),
-              const SizedBox(
-                height:40.0,
-              ),
-              SizedBox(
-                height: 50,
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor:
-                    const Color.fromARGB(255,241,89,0)),
-                  onPressed: (){isLoader ? print("Cargando..."):
-                  _submitForm();
-                  },
-                  child: isLoader
-                      ? const Center(child: CircularProgressIndicator())
-                  : const Text(
-                    "Crear", style: TextStyle(fontSize: 20))),
-              ),
-              const SizedBox(
-                height:20.0,
-              ),
-              TextButton(onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder:
-                (context)=>const LoginView()),);
-              },
-                  child: const Text("Login",style: TextStyle(
-                      color: Color(0xFFF15900),fontSize: 20),
-                  )
-              )
-            ],
+                  decoration: _buildInputDecoration("Nro. de teléfono",Icons.call),
+                  validator: appValidator.validatePhoneNumber),
+                const SizedBox(
+                  height:16.0,
+                ),
+                TextFormField(
+                  controller: _userPassController,
+                    style: const TextStyle(color: Colors.white),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    decoration: _buildInputDecoration("Contraseña",Icons.lock),
+                    validator: appValidator.validatePass),
+                const SizedBox(
+                  height:30.0,
+                ),
+                SizedBox(
+                  height: 50,
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(backgroundColor:
+                      const Color.fromARGB(255,241,89,0)),
+                    onPressed: (){isLoader ? print("Cargando..."):
+                    _submitForm();
+                    },
+                    child: isLoader
+                        ? const Center(child: CircularProgressIndicator())
+                    : const Text(
+                      "Crear", style: TextStyle(fontSize: 20))),
+                ),
+                const SizedBox(
+                  height:20.0,
+                ),
+                TextButton(onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder:
+                  (context)=>const LoginView()),);
+                },
+                    child: const Text("Login",style: TextStyle(
+                        color: Color(0xFFF15900),fontSize: 20),
+                    )
+                )
+              ],
+            ),
           ),),)) ;
   }
 

@@ -50,72 +50,74 @@ class _LoginViewState extends State<LoginView> {
           padding: const EdgeInsets.all(16.0),
           child: Form(
             key: _formKey,
-            child: Column(
-              children: [
-                const SizedBox(
-                  height:80.0,
-                ),
-                const SizedBox(
-                  width: 250,
-                  child: Text(
-                    "Iniciar sesión",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height:80.0,
+                  ),
+                  const SizedBox(
+                    width: 250,
+                    child: Text(
+                      "Iniciar sesión",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height:16.0,
-                ),
-                TextFormField(
-                  controller: _userEmailController,
-                    keyboardType: TextInputType.emailAddress,
-                    style: const TextStyle(color: Colors.white),
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    decoration: _buildInputDecoration("Correo electrónico",Icons.email),
-                    validator: appValidator.validateEmail),
-                const SizedBox(
-                  height:16.0,
-                ),
-                TextFormField(
-                  controller: _userPassController,
-                    style: const TextStyle(color: Colors.white),
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    decoration: _buildInputDecoration("Contraseña",Icons.lock),
-                    validator: appValidator.validatePass),
-                const SizedBox(
-                  height:40.0,
-                ),
-                SizedBox(
-                  height: 50,
-                  width: double.infinity,
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(backgroundColor:
-                      const Color.fromARGB(255,241,89,0)),
-                      onPressed: () {isLoader ? print("Cargando...") :
-                      _submitForm();
-                      },
-                      child: isLoader
-                          ? const Center(child: CircularProgressIndicator())
-                          :
-                      const Text(
-                          "Login", style: TextStyle(fontSize: 20))),
-                ),
-                const SizedBox(
-                  height:20.0,
-                ),
-                TextButton(onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder:
-                      (context)=>const SignUpView()),);
-                },
-                    child: const Text("Crear cuenta",style: TextStyle(
-                        color: Color(0xFFF15900),fontSize: 20),
-                    )
-                )
-              ],
+                  const SizedBox(
+                    height:16.0,
+                  ),
+                  TextFormField(
+                    controller: _userEmailController,
+                      keyboardType: TextInputType.emailAddress,
+                      style: const TextStyle(color: Colors.white),
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      decoration: _buildInputDecoration("Correo electrónico",Icons.email),
+                      validator: appValidator.validateEmail),
+                  const SizedBox(
+                    height:16.0,
+                  ),
+                  TextFormField(
+                    controller: _userPassController,
+                      style: const TextStyle(color: Colors.white),
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      decoration: _buildInputDecoration("Contraseña",Icons.lock),
+                      validator: appValidator.validatePass),
+                  const SizedBox(
+                    height:40.0,
+                  ),
+                  SizedBox(
+                    height: 50,
+                    width: double.infinity,
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(backgroundColor:
+                        const Color.fromARGB(255,241,89,0)),
+                        onPressed: () {isLoader ? print("Cargando...") :
+                        _submitForm();
+                        },
+                        child: isLoader
+                            ? const Center(child: CircularProgressIndicator())
+                            :
+                        const Text(
+                            "Login", style: TextStyle(fontSize: 20))),
+                  ),
+                  const SizedBox(
+                    height:20.0,
+                  ),
+                  TextButton(onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder:
+                        (context)=>const SignUpView()),);
+                  },
+                      child: const Text("Crear cuenta",style: TextStyle(
+                          color: Color(0xFFF15900),fontSize: 20),
+                      )
+                  )
+                ],
+              ),
             ),),)) ;
   }
 
