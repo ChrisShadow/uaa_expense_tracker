@@ -56,11 +56,13 @@ class _HomeState extends State<Home> {
           color: Colors.white,))
         ],
       ),
-      body: Column(
-        children: [
-          HeroCard(userId: userId,),
-          TransactCard()
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            HeroCard(userId: userId,),
+            TransactCard()
+          ],
+        ),
       ),
 
     );
