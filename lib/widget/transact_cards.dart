@@ -1,12 +1,11 @@
 
-import 'package:expense_tracker/utils/icon_lists.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:expense_tracker/widget/transaction_card.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class TransactCard extends StatelessWidget {
-  TransactCard({super.key});
-
-  final appIcons=AppIcons();
+  const TransactCard({super.key});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -20,79 +19,48 @@ class TransactCard extends StatelessWidget {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),)
               ],
             ),
-            ListView.builder(
-                shrinkWrap: true,
-                itemCount: 4,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index){
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        offset: const Offset(0,10),
-                        color: Colors.grey.withOpacity(0.09),
-                        spreadRadius: 4.0)
-                    ]
-                  ),
-                  child: ListTile(
-                    minVerticalPadding: 5,
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 0
-                    ),
-                    leading: SizedBox(
-                      width: 70,
-                      height: 100,
-                      child: Container(
-                        width: 25,
-                        height: 25,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Colors.green.withOpacity(0.2),
-                        ),
-                        child: Center(
-                          child: FaIcon(
-                            appIcons.getExpenseCategoryIcons('home')
-                          ),
-                        ),
-                      ),
-                    ),
-                    title: const Row(
-                      children: [
-                        Expanded(child: Text("Taller auto Feb 2024", style:
-                          TextStyle(fontSize: 15),)),
-                        Text("Gs. 500.000", style: TextStyle(
-                          color: Colors.green, fontSize: 15),)
-                      ],
-                    ),
-                    subtitle: const Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text("Balance", style: TextStyle(
-                                color: Colors.grey, fontSize: 13),),
-                            Spacer(),
-                            Text("Gs. 50.000", style: TextStyle(
-                              color: Colors.grey, fontSize: 13),)
-                          ],),
-                        Text("29 feb 16:57", style: TextStyle(
-                          color: Colors.grey
-                        ),)
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            })
+            RecentTransactionsList()
           ],
         ),
       ),
     );
   }
 }
+
+class RecentTransactionsList extends StatelessWidget {
+  RecentTransactionsList({
+    super.key,
+  });
+  final userId=FirebaseAuth.instance.currentUser!.uid;
+  @override
+  Widget build(BuildContext context){
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection("transactions")
+        .snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
+        if(snapshot.hasError){
+          return const Text("Algo no salió bien.");
+        }
+        else if(snapshot.connectionState==ConnectionState.waiting){
+          return const Text("Cargando,favor aguarde.");
+        }
+        else if(!snapshot.hasData || snapshot.data!.docs.isEmpty){
+          return const Center(child: Text("Transacciones no encontradas."),);
+        }
+        var data=snapshot.data!.docs;
+        return ListView.builder(
+            shrinkWrap: true,
+            itemCount: data.length,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index){
+              var cardData=data[index];
+              return TransactionCard(data: cardData,);
+            });
+  });
+  }
+}
+
+
