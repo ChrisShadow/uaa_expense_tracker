@@ -60,7 +60,7 @@ class _HomeState extends State<Home> {
         child: Column(
           children: [
             HeroCard(userId: userId,),
-            TransactCard()
+            const TransactCard()
           ],
         ),
       ),
