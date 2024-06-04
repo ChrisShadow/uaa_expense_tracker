@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 
 import '../utils/icon_lists.dart';
 
@@ -11,6 +12,8 @@ class TransactionCard extends StatelessWidget{
   final appIcons=AppIcons();
   @override
   Widget build(BuildContext context){
+    DateTime date=DateTime.fromMillisecondsSinceEpoch(data['timestamp']);
+    String formattedDate=DateFormat('d MMM hh:mma').format(date);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: Container(
@@ -38,21 +41,25 @@ class TransactionCard extends StatelessWidget{
               height: 25,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
-                color: Colors.green.withOpacity(0.2),
+                color:data['type']== 'crédito' ?
+                Colors.green.withOpacity(0.2) : Colors.red.withOpacity(0.2)
               ),
               child: Center(
                 child: FaIcon(
-                    appIcons.getExpenseCategoryIcons('${data['category']}')
+                    appIcons.getExpenseCategoryIcons('${data['category']}'),
+                    color:data['type']== 'crédito' ?
+                    Colors.green : Colors.red
                 ),
               ),
             ),
           ),
           title: Row(
             children: [
-              const Expanded(child: Text("Taller auto Feb 2024", style:
-              TextStyle(fontSize: 15),)),
-              Text("Gs. ${data['amount']}", style: const TextStyle(
-                  color: Colors.green, fontSize: 15),)
+               Expanded(child: Text('${data['title']}', style:
+              const TextStyle(fontSize: 18),)),
+              Text("${data['type']=='crédito' ? '+':'-'}Gs.${data['amount']}", style: TextStyle(
+                  color: data['type']== 'crédito' ?
+                  Colors.green : Colors.red, fontSize: 18),)
             ],
           ),
           subtitle: Column(
@@ -62,12 +69,12 @@ class TransactionCard extends StatelessWidget{
               Row(
                 children: [
                   const Text("Balance", style: TextStyle(
-                      color: Colors.grey, fontSize: 13),),
+                      color: Colors.grey, fontSize: 15),),
                   const Spacer(),
                   Text("Gs. ${data['remainingAmount']}", style: const TextStyle(
-                      color: Colors.grey, fontSize: 13),)
+                      color: Colors.grey, fontSize: 15),)
                 ],),
-              const Text("29 feb 16:57", style: TextStyle(
+              Text(formattedDate , style: const TextStyle(
                   color: Colors.grey
               ),)
             ],

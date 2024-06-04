@@ -28,7 +28,7 @@ class _AddTransactFormState extends State<AddTransactForm> {
         isLoader=true;
       });
       final user=FirebaseAuth.instance.currentUser;
-      int timestamp=DateTime.now().microsecondsSinceEpoch;
+      int timestamp=DateTime.now().millisecondsSinceEpoch;
       var amount=int.parse(amountEditController.text);
       DateTime date=DateTime.now();
       var id=uid.v4();
