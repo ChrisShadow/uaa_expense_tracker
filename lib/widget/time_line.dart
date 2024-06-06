@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TimeLineMonth extends StatefulWidget {
-  const TimeLineMonth({super.key});
+  const TimeLineMonth({super.key, required this.onChanged});
+  final ValueChanged<String?> onChanged;
 
   @override
   State<TimeLineMonth> createState() => _TimeLineMonthState();
@@ -11,6 +12,7 @@ class TimeLineMonth extends StatefulWidget {
 class _TimeLineMonthState extends State<TimeLineMonth> {
   String currentMonth="";
   List<String> months=[];
+  final scrollController=ScrollController();
   @override
   void initState(){
     super.initState();
@@ -21,6 +23,18 @@ class _TimeLineMonthState extends State<TimeLineMonth> {
       );
     }
     currentMonth=DateFormat('MMM y').format(now);
+    Future.delayed(const Duration(seconds: 1),(){
+      scrollToSelectedMonth();
+    });
+  }
+  scrollToSelectedMonth(){
+    final selectedMonthIndex=months.indexOf(currentMonth);
+    if(selectedMonthIndex!=-1){
+      final scrollOffset=(selectedMonthIndex*100.0)-170;
+      scrollController.animateTo(scrollOffset,
+          duration: const Duration(microseconds: 500),
+          curve: Curves.ease);
+    }
   }
 
   @override
@@ -28,6 +42,7 @@ class _TimeLineMonthState extends State<TimeLineMonth> {
     return SizedBox(
       height: 40,
       child: ListView.builder(
+        controller: scrollController,
           itemCount: months.length,
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index){
@@ -35,7 +50,9 @@ class _TimeLineMonthState extends State<TimeLineMonth> {
           onTap:(){
             setState(() {
               currentMonth=months[index];
+              widget.onChanged(months[index]);
             });
+            scrollToSelectedMonth();
           },
           child: Container(
             width: 80,

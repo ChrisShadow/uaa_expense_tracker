@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../widget/category_list.dart';
 import '../widget/time_line.dart';
 
 class Transaction extends StatelessWidget {
@@ -12,10 +13,13 @@ class Transaction extends StatelessWidget {
         title: const Text("Expansivo"),
 
       ),
-      body: const SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Column(
           children: [
-            TimeLineMonth(),
+            TimeLineMonth(onChanged: (
+                String? value) {  },),
+            CategoryList(onChanged: (
+                String? value) {  },)
           ],
         ),
       ),

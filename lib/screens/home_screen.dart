@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expense_tracker/widget/add_transact_form.dart';
 import 'package:expense_tracker/widget/hero_card.dart';
 import 'package:expense_tracker/widget/transact_cards.dart';
@@ -34,6 +35,22 @@ class _HomeState extends State<Home> {
       );
     });
   }
+  late Future<dynamic> userData;
+
+  Future<Object?> fetchUserData() async {
+    final DocumentSnapshot userDoc =
+    await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    if (userDoc.exists) {
+      return userDoc.data();
+    } else {
+      throw Exception("Usuario no encontrado.");
+    }
+  }
+  @override
+  void initState() {
+    super.initState();
+    userData = fetchUserData();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +63,18 @@ class _HomeState extends State<Home> {
       ),
       appBar: AppBar(
         backgroundColor: Colors.blue.shade900,
-        title: const Text("Hola, ", style: TextStyle(color: Colors.white),),
+        title: FutureBuilder<dynamic>(
+          future: userData,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Text('Cargando...', style: TextStyle(color: Colors.white));
+            } else if (snapshot.hasError) {
+              return const Text('Error', style: TextStyle(color: Colors.white));
+            } else {
+              return Text('Hola, ${snapshot.data['username']}', style: const TextStyle(color: Colors.white));
+            }
+          },
+        ),
         actions: [
           IconButton(onPressed: (){
             logOut();
