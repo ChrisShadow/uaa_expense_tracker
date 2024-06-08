@@ -45,7 +45,7 @@ class RecentTransactionsList extends StatelessWidget {
         if(snapshot.hasError){
           return const Text("Algo no salió bien.");
         }
-        else if(snapshot.connectionState==ConnectionState.waiting){
+        else if(snapshot.connectionState == ConnectionState.waiting){
           return const Text("Cargando,favor aguarde.");
         }
         else if(!snapshot.hasData || snapshot.data!.docs.isEmpty){

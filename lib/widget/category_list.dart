@@ -29,17 +29,6 @@ class _CategoryListState extends State<CategoryList> {
     });
 
   }
-  //scrollToSelectedMonth(){
-    //final selectedMonthIndex=months.indexOf(currentMonth);
-    //if(selectedMonthIndex!=-1){
-      //final scrollOffset=(selectedMonthIndex*100.0)-170;
-      //scrollController.animateTo(scrollOffset,
-          //duration: const Duration(microseconds: 500),
-          //curve: Curves.ease);
-    //}
-  //}
-
-
 
   @override
   Widget build(BuildContext context) {
