@@ -54,7 +54,11 @@ class _LoginViewState extends State<LoginView> {
               child: Column(
                 children: [
                   const SizedBox(
-                    height:80.0,
+                    height: 100.0,
+                    child: Image(image: AssetImage('assets/icons/uaalogo.png')),
+                  ),
+                  const SizedBox(
+                    height:20.0,
                   ),
                   const SizedBox(
                     width: 250,

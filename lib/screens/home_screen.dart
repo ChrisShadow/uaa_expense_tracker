@@ -5,6 +5,7 @@ import 'package:expense_tracker/widget/transact_cards.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'info_screen.dart';
 import 'login_screen.dart';
 
 class Home extends StatefulWidget {
@@ -76,6 +77,14 @@ class _HomeState extends State<Home> {
           },
         ),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.info, color: Colors.white),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const InfoScreen()),
+              );
+            },
+          ),
           IconButton(onPressed: (){
             logOut();
           }, icon: isLogoutLoading
