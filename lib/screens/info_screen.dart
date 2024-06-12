@@ -20,6 +20,7 @@ class InfoScreen extends StatelessWidget {
                 height: 100.0,
                 child: Image(image: AssetImage('assets/icons/loguaa.jpg')),
               ),
+              SizedBox(height: 20),
               Text('Universidad Autónoma de Asunción - Facultad Ciencias y Tecnología', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
               SizedBox(height: 20),
               Text('Materia: Programación para Dispositivos Móviles Avanzada', style: TextStyle(fontSize: 18)),
