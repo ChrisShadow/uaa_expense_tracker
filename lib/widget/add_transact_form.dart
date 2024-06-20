@@ -6,6 +6,20 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
+String formatNumber(dynamic number) {
+  final formatter = NumberFormat("#,##0", "de_DE"); // Use German locale for dot as thousand separator
+  if (number == null) {
+    return "0";
+  } else if (number is int) {
+    return formatter.format(number);
+  } else if (number is String) {
+    return formatter.format(int.parse(number));
+  } else if (number is double) {
+    return formatter.format(number.toInt());
+  }
+  return number.toString(); // Fallback in case of unexpected type
+}
+
 class AddTransactForm extends StatefulWidget {
   const AddTransactForm({super.key});
 
@@ -22,6 +36,11 @@ class _AddTransactFormState extends State<AddTransactForm> {
   var amountEditController=TextEditingController();
   var titleEditController=TextEditingController();
   var uid=const Uuid();
+
+  int remainingAmount = 0;
+  int totalCredit = 0;
+  int totalDebit = 0;
+
   Future <void> _submitForm() async {
     if(_formKey.currentState!.validate()){
       setState(() {
@@ -29,7 +48,7 @@ class _AddTransactFormState extends State<AddTransactForm> {
       });
       final user=FirebaseAuth.instance.currentUser;
       int timestamp=DateTime.now().millisecondsSinceEpoch;
-      var amount=int.parse(amountEditController.text);
+      var amount=int.parse(amountEditController.text.replaceAll('.', ''));
       DateTime date=DateTime.now();
       var id=uid.v4();
       String monthYear=DateFormat('MMM y').format(date);
@@ -105,7 +124,18 @@ class _AddTransactFormState extends State<AddTransactForm> {
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   labelText: "Monto"
-                ),),
+                ),
+                onChanged: (value) {
+                  String formattedValue = value.replaceAll('.', '');
+                  if (formattedValue.isNotEmpty) {
+                    formattedValue = formatNumber(int.parse(formattedValue));
+                  }
+                  amountEditController.value = TextEditingValue(
+                    text: formattedValue,
+                    selection: TextSelection.collapsed(offset: formattedValue.length),
+                  );
+                },
+              ),
               CategoryDropDown(
                 cattype: category,
                 onChanged: (String? value){

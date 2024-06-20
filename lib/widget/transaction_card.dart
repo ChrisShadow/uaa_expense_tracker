@@ -4,6 +4,20 @@ import 'package:intl/intl.dart';
 
 import '../utils/icon_lists.dart';
 
+String formatNumber(dynamic number) {
+  final formatter = NumberFormat("#,##0", "de_DE"); // Use German locale for dot as thousand separator
+  if (number == null) {
+    return "0";
+  } else if (number is int) {
+    return formatter.format(number);
+  } else if (number is String) {
+    return formatter.format(int.parse(number));
+  } else if (number is double) {
+    return formatter.format(number.toInt());
+  }
+  return number.toString(); // Fallback in case of unexpected type
+}
+
 class TransactionCard extends StatelessWidget{
   TransactionCard({
     super.key, required this.data,
@@ -57,7 +71,7 @@ class TransactionCard extends StatelessWidget{
             children: [
                Expanded(child: Text('${data['title']}', style:
               const TextStyle(fontSize: 18),)),
-              Text("${data['type']=='crédito' ? '+':'-'}Gs.${data['amount']}", style: TextStyle(
+              Text("${data['type']=='crédito' ? '+':'-'}Gs.${formatNumber(data['amount'])}", style: TextStyle(
                   color: data['type']== 'crédito' ?
                   Colors.green : Colors.red, fontSize: 18),)
             ],
@@ -71,7 +85,7 @@ class TransactionCard extends StatelessWidget{
                   const Text("Balance", style: TextStyle(
                       color: Colors.grey, fontSize: 15),),
                   const Spacer(),
-                  Text("Gs. ${data['remainingAmount']}", style: const TextStyle(
+                  Text("Gs. ${formatNumber(data['remainingAmount'])}", style: const TextStyle(
                       color: Colors.grey, fontSize: 15),)
                 ],),
               Text(formattedDate , style: const TextStyle(

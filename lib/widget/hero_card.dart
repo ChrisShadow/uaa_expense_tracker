@@ -1,5 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+String formatNumber(dynamic number) {
+  final formatter = NumberFormat("#,##0", "de_DE"); // Use German locale for dot as thousand separator
+  if (number == null) {
+    return "0";
+  } else if (number is int) {
+    return formatter.format(number);
+  } else if (number is String) {
+    return formatter.format(int.parse(number));
+  } else if (number is double) {
+    return formatter.format(number.toInt());
+  }
+  return number.toString(); // Fallback in case of unexpected type
+}
 
 class HeroCard extends StatelessWidget{
   const HeroCard({
@@ -57,7 +72,7 @@ class Cards extends StatelessWidget{
                             height: 1.2,
                             fontWeight: FontWeight.w600
                         ) ),
-                    Text("Gs.${data['remainingAmount']}",
+                    Text("Gs.${formatNumber(data['remainingAmount'])}",
                       style: const TextStyle(
                           fontSize: 40,
                           color: Colors.white,
@@ -79,11 +94,11 @@ class Cards extends StatelessWidget{
               ),
               child: Row(
                 children: [
-                  CardOne(color: Colors.green, heading: 'Crédito', amount: '${data['totalCredit']}',),
+                  CardOne(color: Colors.green, heading: 'Crédito', amount: formatNumber(data['totalCredit']),),
                   const SizedBox(
                     width: 10,
                   ),
-                  CardOne(color: Colors.red, heading: 'Débito', amount: '${data['totalDebit']}',),
+                  CardOne(color: Colors.red, heading: 'Débito', amount: formatNumber(data['totalDebit']),),
                 ],
               ),
             )
@@ -125,7 +140,7 @@ class CardOne extends StatelessWidget{
                   Text("Gs$amount",
                     style: TextStyle(
                         color: color,
-                        fontSize: 20,
+                        fontSize: 19,
                         fontWeight: FontWeight.w600),)],),
               const Spacer(),
               Padding(
